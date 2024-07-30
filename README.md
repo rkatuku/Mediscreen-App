@@ -1,37 +1,37 @@
 **How to set-up**
 
+```
 docker build --t microservice-discovery .
-
 docker run --name ms_discovery_container -p 8761:8761 microservice-discovery
-
-
-
+```
+```
 docker build --t microservice-patient .
 
 docker run --name ms_patient_container -p 8081:8081 microservice-patient
-
-
-
+```
+```
 docker build --t microservice-note .
 
 docker run --name ms_note_container -p 8082:8082 microservice-note
-
-
-
+```
+```
 docker build --t microservice-report .
 
 docker run --name ms_patient_report -p 8083:8083 microservice-report
+```
+
+
 
 **Microservice-patient**
 
 Service has the functionality to add/inquire/delete/update the patient information.  The patient information is stored in postgres DB
 
 ![image](https://github.com/user-attachments/assets/b8099c44-d237-48fd-beac-9cc2448b88fd)
- 
 Get Mappings
-
+```
 http://localhost:8081/patient/family-name/Ferguson
-
+```
+```json
 {
     "id": 1,
     "name": "Ferguson",
@@ -41,9 +41,11 @@ http://localhost:8081/patient/family-name/Ferguson
     "address": "2 Warren Street ",
     "phone": "387-866-1399"
 }
-
+```
+```
 http://localhost:8081/patient/1
-
+```
+```json
 {
     "id": 7,
     "name": "Wilson",
@@ -53,17 +55,17 @@ http://localhost:8081/patient/1
     "address": "12 Cobblestone St",
     "phone": "300-452-1091"
 }
-
+```
 Post Mapping
-
-http://10.0.0.174:8081/patient/add?family=Ferguson&given=Lucas&dob=1968-06-22&sex=M&address=2 Warren Street &phone=387-866-1399
-
+```
+http://localhost:8081/patient/add?family=Ferguson&given=Lucas&dob=1968-06-22&sex=M&address=2 Warren Street &phone=387-866-1399
+```
 Put Mapping
-
-http://10.0.0.174:8081/patient
-
+```
+http://localhost:8081/patient
+```
 Request body
-
+```json
 {
     "id": 1,
     "name": "Ferguson",
@@ -73,11 +75,11 @@ Request body
     "address": "2 Warren Street ",
     "phone": "387-866-1399"
 }
-
+```
 Delete Mapping
-
-http://10.0.0.174:8081/patient/1
-
+```
+http://localhost:8081/patient/1
+```
 
 
 
@@ -85,19 +87,23 @@ http://10.0.0.174:8081/patient/1
 
 Microservice note service can accept freeform provider notes and the notes are attached to idPatient.
 Provider notes is stored in mangoDB
+![image](https://github.com/user-attachments/assets/5f0334e9-dba6-4839-8fe1-5492ebb43708)
  
 Get mapping and sample response
-
+```
 http://localhost:8082/patHistory/1
-
+```
+```json
 {
     "id": 1,
     "note": "\"Patient states that they are \"\"feeling terrific\"\"\nWeight at or below recommended level\n\"",
     "idPatient": 1
 }
-
+```
+```
 http://localhost:8082/patHistory/patient/1
-
+```
+```json
 [
     {
         "id": 1,
@@ -115,28 +121,27 @@ http://localhost:8082/patHistory/patient/1
         "idPatient": 1
     }
 ]
-
+```
 Post Mapping 
-
+```
 http://localhost:8082/patHistory/add?patId=3&note=Lab reports Microalbumin elevated
-
+```
 Put Mapping
-
+```
 http://localhost:8082/patHistory
-
+```
 Request body
-
+```json
 {
     "id": 1,
     "note": "\"Patient states that they are \"\"feeling terrific\"\"\nWeight at or below recommended level\n\"",
     "idPatient": 1
 }
-
+```
 Delete Mapping
-
+```
 http://localhost:8082/patHistory/1
-
-
+```
 
 
 
@@ -145,24 +150,25 @@ http://localhost:8082/patHistory/1
 Microservice report service will access patient notes and access risk level based on the trigger terms that match the patient notes.
 Additional service also has the endpoints to accept various trigger terms and store them in mango DB
 
-![image](https://github.com/user-attachments/assets/5f0334e9-dba6-4839-8fe1-5492ebb43708)
-
-
 Endpoints
 
 Post Mapping
+```
 http://localhost:8083/trigger
-
+```
 Request body
-
+```json
 {
     "triggerCriteria": "Abnormal",
     "created": "2024-07-23"
 }
+```
 
 Get Mapping
+```
 http://localhost:8083/trigger
-
+```
+```json
 [
     {
         "id": 1,
@@ -220,13 +226,14 @@ http://localhost:8083/trigger
         "created": "2024-07-23T00:00:00.000+00:00"
     }
 ]
-
+```
 
 Report service and sample response
-
+```
 http://localhost:8083/assess/familyName?familyName=Ferguson
 http://localhost:8083/assess/id?patId=8
-
+```
+```json
 {
     "id": 18,
     "idPatient": 8,
@@ -243,9 +250,10 @@ http://localhost:8083/assess/id?patId=8
         "age": 79
     }
 }
+```
 
 Sample report
-
+```json
 [{
   "_id": 1,
   "idPatient": 1,
@@ -351,3 +359,4 @@ Sample report
   "description": "Patient: Rees Pippa (age 71) diabetes assessment is: Early onset",
   "_class": "com.mediscreen.report.entity.Report"
 }]
+```
