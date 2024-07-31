@@ -1,22 +1,61 @@
+**About**
+
+Docker deployable service that will generate the patient’s risk level for developing
+diabetes. The report should include the patient’s demographics, along with the risk level.
+
+A patient will have one of 4 risk levels.
+* None
+* Borderline
+* In danger
+* Early Onset.
+
+The rules for determining the risk levels are as follows.
+* None - patient has no doctor’s notes containing any of the trigger
+terminology.
+* Borderline - patient has a reference to two triggers, and is over 30 years of
+age.
+* In danger - depends on patient’s age and sex. If under 30, and male, then
+three trigger terms.
+* If under 30 and female, four trigger terms. If either over 30, then six.
+* Early Onset - again, depends on age and sex. If under 30, and male, then
+five trigger terms.
+* If under 30 and female, seven trigger terms. If over 30, then eight or more.
+
+The trigger terms to search for in the provider’s notes are:
+
+* Hemoglobin A1C
+* Microalbumin
+* Body Height
+* Body Weight
+* Smoker
+* Abnormal
+* Cholesterol
+* Dizziness
+* Relapse
+* Reaction
+* Antibodies
+
+
 **How to set-up**
 
+* **microservice-discovery**
 ```
 docker build --t microservice-discovery .
 docker run --name ms_discovery_container -p 8761:8761 microservice-discovery
 ```
+* **microservice-patient**
 ```
 docker build --t microservice-patient .
-
 docker run --name ms_patient_container -p 8081:8081 microservice-patient
 ```
+* **microservice-note**
 ```
 docker build --t microservice-note .
-
 docker run --name ms_note_container -p 8082:8082 microservice-note
 ```
+* **microservice-report**
 ```
 docker build --t microservice-report .
-
 docker run --name ms_patient_report -p 8083:8083 microservice-report
 ```
 
